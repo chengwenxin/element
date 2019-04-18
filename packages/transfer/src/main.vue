@@ -101,6 +101,7 @@
           return [];
         }
       },
+      // 顶部勾选文案
       format: {
         type: Object,
         default() {
@@ -108,6 +109,7 @@
         }
       },
       filterable: Boolean,
+      // 设置对象键的名称（别名）
       props: {
         type: Object,
         default() {
@@ -118,6 +120,7 @@
           };
         }
       },
+      // 添加到右侧的列表排序规则
       targetOrder: {
         type: String,
         default: 'original'
@@ -132,15 +135,16 @@
     },
 
     computed: {
+      // 将对象数组转换为Map类型 便于索引
       dataObj() {
         const key = this.props.key;
         return this.data.reduce((o, cur) => (o[cur[key]] = cur) && o, {});
       },
-  
+      // 过滤元数据（去重）
       sourceData() {
         return this.data.filter(item => this.value.indexOf(item[this.props.key]) === -1);
       },
-
+      // 过滤目标数据  ???两种处理方式有何区别   第一个是按左边原有的顺序  第二个是按照添加的先后顺序
       targetData() {
         if (this.targetOrder === 'original') {
           return this.data.filter(item => this.value.indexOf(item[this.props.key]) > -1);
@@ -162,11 +166,13 @@
 
     watch: {
       value(val) {
+        // 具体是干了啥？？？
         this.dispatch('ElFormItem', 'el.form.change', val);
       }
     },
 
     methods: {
+      // 三个引入文件的作用
       getMigratingConfig() {
         return {
           props: {
@@ -174,10 +180,11 @@
           }
         };
       },
-
+  
       onSourceCheckedChange(val, movedKeys) {
         this.leftChecked = val;
         if (movedKeys === undefined) return;
+        // 这个left-check-chagne 事件最终去了哪儿
         this.$emit('left-check-change', val, movedKeys);
       },
 
@@ -195,11 +202,13 @@
             currentValue.splice(index, 1);
           }
         });
+        // 在自定义组件上使用 v-model (原本只适用于 (input事件)input textarea （change事件）select checkedbox radio)
         this.$emit('input', currentValue);
         this.$emit('change', currentValue, 'left', this.rightChecked);
       },
 
       addToRight() {
+        // slice为空是什么操作
         let currentValue = this.value.slice();
         const itemsToBeMoved = [];
         const key = this.props.key;

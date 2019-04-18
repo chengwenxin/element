@@ -54,6 +54,10 @@
         const data = [];
         const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都'];
         const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu'];
+        for(let i=0;i<1000;i++){
+          cities.push('洛杉矶'+i)
+          pinyin.push('losangles'+i)
+        }
         cities.forEach((city, index) => {
           data.push({
             label: city,
